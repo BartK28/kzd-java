@@ -4,6 +4,12 @@ In deze les gaan we wat dieper in op Paper. We kijken onder andere naar configs.
 
 Ook gaan we een begin maken met MySql data opslag.
 
+## Lombok ##
+We beginnen met Lombok. Lombok is een library die het makkelijker maakt om classes te maken. Het zorgt ervoor dat je minder code hoeft te schrijven. En dat je code makkelijker te lezen is.
+
+### Installatie ###
+We hebben in Les 1 al eens naar Lombok gekeken. Installeer Lombok hier op dezelfde manier. Als je het niet meer weet kan je het teruglezen in Les 1.
+
 ## Configs ##
 Configs zijn een manier om data op te slaan. Je kan het zien als een soort database. Het is een bestand waarin je data kan opslaan. Je kan het gebruiken om bijvoorbeeld een lijst met warps op te slaan. Of een lijst met spelers die een bepaalde rank hebben.
 
@@ -17,12 +23,12 @@ Als je het bestand hebt aangemaakt kan je het openen. Je ziet dan een leeg besta
 ### Config laden ###
 Om een config te laden moet je eerst een variabele aanmaken. Dit doe je door het volgende te typen:
 ```java
-FileConfiguration config;
+private FileConfiguration warpConfig;
 ```
 
 Daarna moet je de config laden. Dit doe je door het volgende te typen:
 ```java
-config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "warps.yml"));
+warpConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder() + "/warps.yml"));
 ```
 
 ### Config opslaan ###
@@ -47,6 +53,22 @@ Tips:
 
 Foutafhandeling:
 - Als de warp geen naam heeft meegegeven moet je een bericht sturen naar de speler.
+
+Gebruik de volgende code in je Main class om je config op te slaan:
+```java
+public void saveConfig(FileConfiguration config, String name) {
+    File configFile = new File(getDataFolder() + "/" + name);
+    try{
+        if (!configFile.exists()) {
+            getDataFolder().mkdirs();
+            configFile.createNewFile();
+        }
+        config.save(configFile);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
 
 Sla de warp op onder de opgegeven naam. Dit doe je door een ``.`` te gebruiken als navigator.
 Een warp met de naam spawn komt dus onder de key `warp.spawn` te staan.

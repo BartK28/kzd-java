@@ -40,6 +40,10 @@ Hier hebben we een aantal argumenten.<br/><br/>
 
 ### Server starten ###
 We starten nu de server door het batch script te runnen.
+
+Wanneer je geen jdk17 hebt geïnstalleerd zal je een foutmelding krijgen.
+Om dit op te lossen kan je OpenJDK17 installeren via [Deze Link](https://aka.ms/download-jdk/microsoft-jdk-17.0.7-windows-x64.msi)
+
 De eerste keer zal je opvallen dat er een eula.txt bestand wordt gegenereerd. 
 Open deze in een text editor. En verander de waarde van eula van false naar true.
 ```txt
@@ -64,7 +68,7 @@ Als je het project opent, en kijkt onder src/main/java/resources zie je daar een
 name: 'MyFirstPlugin' # Naam van de plugin
 version: '1.0.0' # Versie van de plugin
 main: 'me.<name>.myfirstplugin.MyFirstPlugin' # Main class van de plugin
-api-version: 1.17 # Versie van de API
+api-version: 1.19 # Versie van de API
 description: 'Les 2 plugin' # Beschrijving van de plugin
 author: '<name>' # Auteur van de plugin
 ```
@@ -76,7 +80,6 @@ Commandos registreren doe je als volgt:
 commands: # Commandos van de plugin
   heal: # Naam van het commando
     description: 'Heal commando' # Beschrijving van het commando
-    usage: '/heal' # Gebruik van het commando
 ```
 
 ### Main class ###
@@ -130,7 +133,6 @@ plugin.yml
 commands: # Commandos van de plugin
   broadcast: # Naam van het commando
     description: 'broadcast commando' # Beschrijving van het commando
-    usage: '/broadcast <message>' # Gebruik van het commando
 ```
 
 MyFirstPlugin.java
@@ -152,7 +154,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             player.sendMessage("Gebruik /broadcast <message>");
         } else {
             String message = String.join(" ", args);
-            Bukkit.broadcastMessage(message);
+            Bukkit.broadcast(Component.text(message));
         }
     }
     return false;
@@ -186,6 +188,7 @@ Enkele tips:
 
 Foutafhandeling:
 - Kijk of de argumenten wel doubles zijn
+
 
 ### Extra: Permissions ###
 We gaan nu permissions toevoegen aan de commandos. Dit doen we door de volgende code toe te voegen aan de plugin.yml:
