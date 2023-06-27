@@ -183,3 +183,50 @@ Enkele tips:
 - Gebruik de methode Player.teleport(Location location) om een speler te teleporteren
 - Gebruik de methode Player.sendMessage(String message) om een speler een bericht te sturen
 - Gebruik Double.parseDouble(String s) om een string om te zetten naar een double
+
+Foutafhandeling:
+- Kijk of de argumenten wel doubles zijn
+
+### Extra: Permissions ###
+We gaan nu permissions toevoegen aan de commandos. Dit doen we door de volgende code toe te voegen aan de plugin.yml:
+```yml
+permissions: # Permissions van de plugin
+  myfirstplugin.heal: # Naam van de permission
+    description: 'Heal commando' # Beschrijving van de permission
+    default: false # Default waarde van de permission
+  myfirstplugin.broadcast: # Naam van de permission
+    description: 'Broadcast commando' # Beschrijving van de permission
+    default: false # Default waarde van de permission
+  myfirstplugin.teleport: # Naam van de permission
+    description: 'Teleport commando' # Beschrijving van de permission
+    default: false # Default waarde van de permission
+```
+
+En we gaan de volgende code toevoegen aan het heal commando:
+```java
+if (player.hasPermission("myfirstplugin.heal")) {
+    // Code
+}
+```
+
+Doe dit nu zelf voor de andere commandos.
+
+## Extra ##
+
+### Kleurcodes in messages ###
+Je kunt kleurcodes toevoegen aan je messages. Dit doe je door de volgende code toe te voegen:
+```java
+player.sendMessage(ChatColor.RED + "Je bent gehealed!");
+```
+
+Ook kun je een paragraaf teken gebruiken (§). Dit doe je door de volgende code toe te voegen:
+```java 
+player.sendMessage("§cJe bent gehealed!");
+```
+
+Hieronder een lijst van mogelijke kleuren:
+![img_2.png](img_2.png)
+
+### Opdracht ###
+Voeg bij elk bericht in je plugin een kleur toe.
+Bedenk een leuke huisstyle.
