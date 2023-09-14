@@ -86,7 +86,6 @@ In deze class maken we een variabele aan voor de portal. En een lijst met portal
 ```java
 @Getter
 @Setter
-@AllArgsConstructor
 public class PortalListener implements Listener {
     
     private List<Portal> portals = new ArrayList<>();
@@ -107,22 +106,25 @@ public void register(Portal portal) {
 Nu gaan we de `PlayerMoveEvent` luisteren. Dit doen we door de volgende code toe te voegen aan de `PortalListener`
 ```java
 @EventHandler
-public void onMove(PlayerMoveEvent event) {
+public void onMove(PlayerMoveEvent event){
     // De speler die beweegt
     Player player = event.getPlayer();
-    
+
     // De locatie van de speler
     Location location = player.getLocation();
-    
+
     // Loop door alle portals
     for (Portal portal : portals) {
-        
+
         // Loop door alle blocks in de portal
-        for (Location location : portal.getBlocks()) {
-        
+        for (Location portalLocation : portal.getBlocks()) {
+
             // Check of de speler in de portal staat
-            if (location.getBlock().getLocation().getBlock() == location.getBlock() {
-                // TODO: Teleporteer de speler naar de target
+            if (portalLocation.getBlockX() == location.getBlockX()
+                && portalLocation.getBlockY() == location.getBlockY()
+                && portalLocation.getBlockZ() == location.getBlockZ()
+                && portalLocation.getWorld() == location.getWorld()) {
+                //TODO: Teleporteer speler naar target
             }
         }
     }
