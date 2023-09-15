@@ -13,6 +13,7 @@ Wij kiezen hier voor de laatste versie. Omdat we ook de laatste versie van paper
     ```batch
     java -Xms512M -Xmx512M -jar server.jar nogui
     ```
+3. Start de server. En sluit deze wanneer hij volledig is opgestart.
 
 ### Hub server opzetten ###
 Nu gaan we een hub server maken, een hub server dient als tussenserver tussen de andere servers. Ook wel een lobby genoemd. Hier kan je spelers heen sturen als ze inloggen. En vanuit hier kunnen ze naar andere servers gaan.
@@ -23,7 +24,7 @@ Maak een map aan genaamd hub, en maak in deze map een server zoals je in [les 1]
 #### Hub server configureren ####
 1. Nu gaan we de hub server configureren. Open de server.properties en verander de server port naar 25566. Dit doen we omdat de velocity server op 25565 draait. En we willen niet dat de hub server op dezelfde poort draait. Als je dit niet doet kan je de hub server niet opstarten.
 2. In de server.properties veranderen we ook de waarde `online-mode` naar `false` dit doen we omdat we anders niet kunnen inloggen op de server. Dit komt omdat de velocity server niet met een online mode server kan verbinden. En we willen dat de hub server met de velocity server verbind.
-3. Open nu de map config en open het bestand `paper-global.yml` scroll naar ~88 en verander de waarde onder `proxies.velocity.enabled` naar `true`, `proxies.velocity.online-mode` naar `true` en vul een wachtwoord in onder `proxies.velocity.secret`.
+3. Open nu de map config en open het bestand `paper-global.yml` scroll naar ~93 en verander de waarde onder `proxies.velocity.enabled` naar `true`, `proxies.velocity.online-mode` naar `true` en vul hier het wachtwoord in wat onder je velocity map staat in het bestand `forwarding.secret` in onder `proxies.velocity.secret`.
 
 #### Velocity configureren voor de hub ####
 1. Open de map velocity in de netwerk map. Open het bestand `velocity.toml` en navigeer naar het blokje `[servers]` hier staan alle servers binnen je netwerk. Haal alle servers weg die voorgeconfigureerd staan. En registreer de hub door de volgende regel toe te voegen. `hub = "127.0.0.1:25566`. Deze regel is opgebouwd uit een `<naam> = "<ip>:<port>"`. Het ip `127.0.0.1` is het ip van de server (localhost). En de port `25566` is de port die we in de server.properties hebben ingesteld.
@@ -34,6 +35,20 @@ Maak een map aan genaamd hub, en maak in deze map een server zoals je in [les 1]
     ]
     ```
     Dit zorgt ervoor dat als een speler inlogt op de server hij/zij naar de hub wordt gestuurd. Dit hoef je ook enkel bij de hub te doen. Niet bij andere servers.
+3. Verwijder onder het kopje `[forced-hosts]` de volgende code
+    ```toml
+   "lobby.example.com" = [
+    "lobby"
+    ]
+    "factions.example.com" = [
+    "factions"
+    ]
+    "minigames.example.com" = [
+    "minigames"
+    ]
+   ```
+4. Verander `player-info-forwarding-mode` naar `modern`
+5. Verander als laatste de port onder `bind` naar `25565`. Dit is de port waarop de velocity server draait.
 
 ### Extra properties ###
 Binnen in de `velocity.toml` hebben we nog een aantal configuratie opties.
@@ -52,7 +67,11 @@ Doe dit op dezelfde manier als de hub. Zonder de laatste stap met het try stuk.
 Nu gaan we plugins maken voor de hub. Deze plugins zorgen ervoor dat spelers naar de juiste server worden gestuurd. En dat ze de juiste items krijgen.
 
 1. Maak een nieuw project aan en noem deze `hub`.
-2. Maak een package aan genaamd `listeners`. Hier komen alle event listeners in. Zoals we vorige week hebben gedaan.
+2. Voeg lombok toe aan je pom.xml. Dit doe je door de volgende regels toe te voegen aan je pom.xml:
+    ```xml
+Inventory inventory = Bukkit.createInventory(null, 9, "Server Selector");
+    ```
+3. Maak een package aan genaamd `listeners`. Hier komen alle event listeners in. Zoals we vorige week hebben gedaan.
 
 ### PlayerJoinListener ###
 We beginnen met een `PlayerJoinListener` deze gaat er voor zorgen dat wanneer een speler inlogt. Hij/zij naar de spawn wordt geteleporteerd. En een set met items krijgt.
@@ -73,6 +92,8 @@ public class PlayerJoinListener implements Listener {
 Hier zien we het `PlayerJoinEvent` in de methode onPlayerJoin. De `@EventHandler` annotatie geeft aan dat we hier een event handler hebben. En dat deze methode wordt uitgevoerd wanneer het event wordt getriggerd.
 
 In die methode zien we dat we een `player` variabele hebben. Dit is de speler die zojuist de server is gejoined.
+
+Registreer dit event in je Hub class. Dit doe je door de volgende regel toe te voegen aan de `onEnable` methode: `getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);`.
 
 Wat we willen doen is de speler teleporteren naar de spawn.
 
@@ -147,6 +168,8 @@ public class ServerSelectorListener implements Listener {
 Hier zien we het `PlayerInteractEvent` in de methode onPlayerInteract. De `@EventHandler` annotatie geeft aan dat we hier een event handler hebben. En dat deze methode wordt uitgevoerd wanneer het event wordt getriggerd.
 
 In die methode zien we dat we een `player` variabele hebben. Dit is de speler die interact in of met de wereld.
+
+Registreer dit event in je Hub class. Dit doe je door de volgende regel toe te voegen aan de `onEnable` methode: `getServer().getPluginManager().registerEvents(new ServerSelectorListener(), this);`.
 
 Wat we willen doen is kijken of de speler met een item in zijn/haar hand interact. En of dit item een server selector is.
 
@@ -224,6 +247,8 @@ Hier zien we het `InventoryClickEvent` in de methode onInventoryClick. De `@Even
 
 In die methode zien we dat we een `player` variabele hebben. Dit is de speler die interact met een inventory.
 
+Registreer dit event in je Hub class. Dit doe je door de volgende regel toe te voegen aan de `onEnable` methode: `getServer().getPluginManager().registerEvents(new ServerSelectorClickListener(), this);`.
+
 Wat we willen doen is kijken of de speler op een item in de inventory klikt. En of dit item een server is.
 
 Kijk of de speler op een item in de inventory klikt. Dit doe je als volgt:
@@ -297,5 +322,15 @@ Hub.getInstance().sendPlayerToServer(player, "tntrun");
 Nu we dit hebben gedaan. Kunnen we de plugin builden. En in de server zetten. Wanneer we nu op de server selector klikken. Zien we dat we een inventory krijgen met een TNT Run item.
 
 Wanneer we hierop klikken worden we naar de TNT Run server gestuurd.
+
+## Opdracht: Cancel EntityDamageEvent ##
+Wanneer je in de lobby bent. En je springt van een hoge plek. Dan krijg je fall damage. Dit willen we niet. We willen dat de speler geen damage krijgt.
+
+Maak een nieuwe class aan genaamd `EntityDamageListener`. Deze moet de `EntityDamageEvent` implementeren. Dit doe je door de volgende regel toe te voegen aan de class declaratie: `implements EntityDamageEvent`.
+
+Registreer dit event. En cancel het.
+
+## Leuk extratje ##
+Voeg de trampoline functie van vorige les ook toe aan je hub plugin. Om je lobby een beetje aan te kleden!
    
 
