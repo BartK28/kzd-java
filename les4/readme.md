@@ -1,4 +1,4 @@
-# Les 3: Minecraft/Paper basics #3 #
+# Les 4: Minecraft/Paper basics #3 #
 
 In deze les kijken we oppervlakkig naar de implementatie van MySQL en databases binnen Java en Minecraft plugins.
 We gaan portals maken om naar onze warps te teleporteren. En we gaan interactie doen met objecten en elementen in het spel. Door middel van events.
