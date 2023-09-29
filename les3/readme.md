@@ -21,12 +21,12 @@ Om een config aan te maken moet je eerst een bestand aanmaken. Dit doe je in de 
 Als je het bestand hebt aangemaakt kan je het openen. Je ziet dan een leeg bestand. Hierin kan je data opslaan. Je kan bijvoorbeeld een lijst met warps opslaan. Of een lijst met spelers die een bepaalde rank hebben.
 
 ### Config laden ###
-Om een config te laden moet je eerst een variabele aanmaken. Dit doe je door het volgende te typen:
+Om een config te laden moet je eerst een variabele aanmaken. Dit doe je door het volgende veld toe te voegen bovenaan je code:
 ```java
 private FileConfiguration warpConfig;
 ```
 
-Daarna moet je de config laden. Dit doe je door het volgende te typen:
+Daarna moet je de config laden. Dit doe je in je onEnable. Je laadt de config door het volgende te typen:
 ```java
 warpConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder() + "/warps.yml"));
 ```
@@ -38,7 +38,9 @@ Data opslaan in een config is heel simpel. Paper heeft een voorgebouwde serializ
 
 Het Locatie object bijvoorbeeld. Wat we vorige week hebben gebruikt. Je kan een locatie opslaan in een config. En je kan een locatie weer ophalen uit een config.
 
-Om een locatie op te slaan in een config moet je het volgende typen:
+Om een locatie op te slaan in een config gebruik je het volgende:
+
+Hier hebben we het pad waar we de locatie op willen slaan. En de locatie variabele die we op willen slaan.
 ```java
 config.set("warp.spawn", loc);
 ```
@@ -48,11 +50,15 @@ Maak een commando aan waarmee je een warp kan instellen. Je moet een naam meegev
 
 Tips:
 - Gebruik de `set` functie van de config om de locatie op te slaan.
-- Gebruik de `save` functie van de config om de config op te slaan.
 - Gebruik de `getLocation` functie van de speler om de locatie op te halen.
 
 Foutafhandeling:
 - Als de warp geen naam heeft meegegeven moet je een bericht sturen naar de speler.
+
+Een command aanmaken doen we op dezelfde manier als in de vorige les.
+- Command aanmaken in de plugin.yml
+- Command class aanmaken die de `onCommand` functie heeft en de CommandExecutor interface implementeert.
+- Command Registeren in de onEnable functie
 
 Gebruik de volgende code in je Main class om je config op te slaan:
 ```java
@@ -67,6 +73,26 @@ public void saveConfig(FileConfiguration config, String name) {
     } catch (IOException e) {
         throw new RuntimeException(e);
     }
+}
+```
+
+Voorbeeldcode onCommand:
+```java
+@Override
+public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    // Check of het commando argumenten heeft.
+        
+    // Cast de CommandSender naar player
+    
+    // Maak een locatie aan van de speler
+    
+    // Sla de locatie op in de config
+        
+    // Sla de config op
+        
+    // Stuur een bericht naar de speler
+    
+    // Return true zodat de server weet dat het commando is afgehandeld.
 }
 ```
 
@@ -90,6 +116,11 @@ Als je een config hebt geladen kan je er data uit ophalen.
 
 #### Oefenopdracht: /warp commando ####
 Maak een commando aan waarmee je naar een warp kan teleporteren. Je moet een naam meegeven. En de locatie die is opgeslagen in de config moet worden opgehaald.
+
+Een command aanmaken doen we op dezelfde manier als in de vorige les.
+- Command aanmaken in de plugin.yml
+- Command class aanmaken die de `onCommand` functie heeft en de CommandExecutor interface implementeert.
+- Command Registeren in de onEnable functie
 
 Tips:
 - Gebruik de `get` functie van de config om de locatie op te halen.
