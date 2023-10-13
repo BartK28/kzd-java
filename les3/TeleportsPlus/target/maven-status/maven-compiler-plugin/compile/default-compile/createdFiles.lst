@@ -1,0 +1,9 @@
+me\legofreak107\teleportsplus\commands\TokenCommand.class
+me\legofreak107\teleportsplus\commands\TeleportCommand.class
+me\legofreak107\teleportsplus\TeleportsPlus.class
+me\legofreak107\teleportsplus\objects\Portal.class
+me\legofreak107\teleportsplus\commands\DelWarpCommand.class
+me\legofreak107\teleportsplus\listeners\PortalListener.class
+me\legofreak107\teleportsplus\commands\WarpCommand.class
+me\legofreak107\teleportsplus\commands\SetWarpCommand.class
+me\legofreak107\teleportsplus\listeners\TrampolineListener.class

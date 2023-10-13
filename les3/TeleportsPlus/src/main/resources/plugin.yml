@@ -1,0 +1,17 @@
+name: TeleportsPlus
+version: '${project.version}'
+main: me.legofreak107.teleportsplus.TeleportsPlus
+api-version: '1.20'
+description: 'TeleportsPlus plugin'
+author: 'Bart Kouwenberg'
+commands:
+  tp:
+    description: 'Teleporteer naar een bestemming'
+  warp:
+    description: 'Warp naar een bestemming'
+  setwarp:
+    description: 'Stel een warp in'
+  delwarp:
+    description: 'Verwijder een warp'
+  tokens:
+    description: 'Verwijder een warp'
