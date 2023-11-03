@@ -86,8 +86,8 @@ public void onShoot(PlayerInteractEvent event) {
         return;
     }
     
-    Sheep sheep = event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.SHEEP);
-    sheep.setColor(Color.RED);
+    Sheep sheep = (Sheep)event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.SHEEP);
+    sheep.setColor(DyeColor.RED);
     sheep.setVelocity(event.getPlayer().getLocation().getDirection().multiply(2));
 }
 ```
