@@ -1,0 +1,4 @@
+name: MobShooter
+version: '${project.version}'
+main: me.legofreak107.mobshooter.MobShooter
+api-version: '1.20'
