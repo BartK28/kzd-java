@@ -1,5 +1,14 @@
 # Les 1: Java Basics #1 #
 
+## Deze les ##
+
+### Leerdoelen ###
+- Intellij IDEA installeren
+- Project aanmaken
+- Lombok installeren
+- Eerste regels Java code schrijven
+
+### Uitleg ###
 We gaan in deze les de eerste stappen zetten richting Java. Dit gaan we doen door een nieuwe editor te installeren, 
 Intellij IDEA. Dit is een IDE van JetBrains. Deze is gratis te gebruiken onder de community editie.
 

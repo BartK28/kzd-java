@@ -1,51 +1,134 @@
 # Les 2: Minecraft / Paper basics #1 #
 
-In deze les gaan we onszelf meer verdiepen in Minecraft en Paper. We gaan een server opzetten. En een plugin maken die een commando heeft. Een heal plugin/tp plugin.
+## Vorige les ##
+[Les 1: Java Basics](https://github.com/bk2804/kzd-java/tree/main/les1)
+
+### Dit zou je gedaan moeten hebben / moeten weten ###
+- Intellij IDEA geïnstalleerd
+- Project aangemaakt
+- Lombok geïnstalleerd
+- Eerste regels Java code geschreven
+
+## Deze les ##
+
+### Leerdoelen ###
+- Weten wat Minecraft is
+- Weten welke Minecraft serveropties we hebben
+- Minecraft plugin voor Intellij
+- Paper server opzetten
+- Eerste Minecraft plugin
+- Plugin bouwen
+- onCommand argumenten
+- Teleportatie commando
+- Kleurcodes in messages
 
 
-## Wat is Minecraft ##
+### Uitleg ###
+In deze les gaan we onszelf verdiepen in Minecraft en Paper. We gaan de volgende dingen doen:
+- De Minecraft plugin installeren voor Intellij IDEA
+- Onze eerste paper server opzetten
+- Onze eerste Minecraft plugin bouwen
+- Ons eerste commando aanmaken
 
-Vele van jullie zullen het spel Minecraft al kennen. Maar voor de mensen die het nog niet kennen. Minecraft is een spel waarin je in een wereld zit. En je kan hierin van alles doen. Je kan bijvoorbeeld blokken plaatsen en breken. En je kan met deze blokken dingen bouwen. Je kan ook tegen monsters vechten. En je kan met andere spelers spelen. Dit kan op een server. Of lokaal op je eigen computer.
+
+# Wat is Minecraft #
+Vele van jullie zullen bekend zijn met het spel Minecraft. Maar voor de mensen die het niet kennen. Hier een korte uitleg
+
+Minecraft is een sandbox-game. Dit betekent dat jij bepaald hoe het spel gaat. Je kiest je eigen route!
+
+Zo kan je in de Minecraft-wereld, bestaande uit blokken. Zelf deze blokken hakken, plaatsen en bewerken. Zo kan je allerlei verschillende bouwwerken maken.
+Dit kan lokaal. Of op een server, met je vrienden!
+
+Verder heb je de mogelijkheid om tegen monsters te vechten. En bijvoorbeeld de wereld verkennen!
+
+Kortom, Minecraft is eindeloos. En dit wordt nog veel leuker. Als je plugins kan maken.
+
+# Minecraft Servers #
+
+Allereerst gaan we kijken naar servers. Wat is een server? En waar wordt een server voor gebruikt?
+
+Minecraft servers zijn simpel gezegd een gedeelde wereld. Spelers kunnen meedoen met deze wereld. En samen spelen.
+
+Een van de meest bekende servers is Hypixel. Hypixel heeft allerlei verschillende gamemodes. Maar allemaal binnen Minecraft.
+
+Zo heb je bijvoorbeeld skyblock, the pit, bedwars, en nog veel meer.
+
+Deze servers zijn gemaakt met plugins. Plugins zijn software die je toevoegt aan je server. Plugins zijn in staat om bestaande functies binnen Minecraft te bewerken.
+Zo kan je bijvoorbeeld maken. Dat als je rechter muisknop doet met een blaze rod. Dat er bliksem komt. Of een schaap spawnt.
 
 ## Welke serveropties hebben we ##
 
-Er zijn een aantal verschillende serveropties. De meest bekende is de officiële server van Mojang. Deze is gratis te downloaden. En is ook de server die Mojang gebruikt voor de officiële Minecraft servers. Deze server is echter niet aan te passen. En heeft ook geen API. Hierdoor kunnen we geen plugins maken voor deze server.
-Hierdoor is door de community onder andere Bukkit ontwikkeld. Bukkit is een server die een API heeft. En waar we plugins voor kunnen maken. Deze server is echter niet meer in ontwikkeling. En is ook niet meer te downloaden. Maar er is een fork van Bukkit. Deze heet Paper. En is een doorontwikkeling van Bukkit. Deze server is nog wel in ontwikkeling. En is ook te downloaden. Deze server gaan we gebruiken voor onze plugins.
+Binnen de categorie servers, hebben we een aantal opties. Ze doen voor de speler allemaal het zelfde. Maar werken op de achtergrond net anders.
 
-## Wat is Paper ##
+### Server opties ###
+- Vanilla: De standaard server van Minecraft. Deze kun je downloaden van [deze link](https://www.minecraft.net/en-us/download/server). - Deze server kan je niet uitbreiden met plugins.
+- Bukkit: Bukkit is de eerste serve software die is gemaakt door derde partijen. Deze server kan je uitbreiden met plugins.
+- Spigot: Spigot is een verder geoptimaliseerde versie van Bukkit. Deze werkt praktisch het zelfde. Alleen is deze beter geoptimaliseerd.
+- Paper: Paper is dan weer een fork van Spigot. Paper past een aantal dingen aan. Waardoor deze nog sneller is!
+- Minestom: Minestom is een bare bone server. Deze implementeert bijna niks van Minecraft. Je kan de game via Minestom dus bijna volledig aanpassen!
 
-Paper is een serversoftware gebouwd voor Minecraft. Door deze custom software krijg je als developer de mogelijkheid om bestaande functionaliteit aan te passen of uit te breiden. Dit doen we door middel van plugins. Plugins zijn stukjes code die je aan de server toevoegd. En die de server vervolgens uitvoert. Hierdoor kan je bijvoorbeeld een commando toevoegen.
+Zo zie je dat bijna alle servers afstammen van Bukkit. Er zijn ondertussen enorm veel forks op Paper. Die ieder zijn gespecialiseerd in eigen optimalisaties. Lang leven open source!
 
-## Minecraft plugin voor Intellij ##
+Voor ons is vooral de Bukkit API belangrijk. Of je deze nu via Bukkit, Spigot, Paper, Purpur, of wat voor fork dan ook benadert. Is je eigen keuze.
 
-We starten met het installeren van de Minecraft plugin voor Intellij. Deze plugin zorgt ervoor dat we makkelijk een project kunnen maken. En dat we makkelijk kunnen programmeren. Deze plugin is te vinden in de plugin store van Intellij. Deze plugin heet “Minecraft Development”. Deze plugin is gemaakt door “Minecraft Development Team”. Deze plugin is gratis te downloaden.
+# Minecraft plugin voor Intellij #
+
+Nu we weten wat servers zijn, en welke serveropties we hebben, gaan we de Minecraft plugin installeren voor Intellij IDEA.
+Deze plugin zal er voor zorgen dat we makkelijk een project kunnen maken.
+
+## Opdracht: Installeer de Minecraft plugin voor Intellij ##
+- Navigeer naar File -> Settings -> Plugins
+- Zorg dat je bovenaan op het tabje Marketplace drukt
+- Zoek naar Minecraft Development
+- Klik op installeren
 
 ![img.png](img.png)
 
-## Paper server opzetten ##
+# Paper server opzetten #
+
+Als dit allemaal is gelukt. Kunnen we beginnen aan het echte werk. Een server opzetten!
+
+## Opdracht: Paper server opzetten ##
 
 ### Paper jar downloaden ###
-Nu we de plugin hebben geïnstalleerd. Kunnen we beginnen met het opzetten van de server. We gaan hiervoor naar de website van Paper. Deze is te vinden op https://papermc.io/downloads/paper. Hier kunnen we de laatste versie van Paper downloaden. We kiezen hier voor de laatste versie van 1.20.1. We downloaden de “Paper-1.20.1.jar”. Deze slaan we op in een map. Maak ergens een map aan gemaakt KZD-JAVA en maak hierin een map genaamd servers. Hierin mag je een map maken genaamd dev-server-1. Hierin plak je de jar die je net hebt gedownload, noem deze server.jar.
+We beginnen met het downloaden van de paper server. Dit is een jar file.
+Deze is te vinden op de website van paper. [Hierrrr](https://papermc.io/downloads/paper)
+Download de versie waar je voor wil programmeren. In mijn geval is dit de versie 1.20.4.
+Dit zal een bestand downloaden met de naam paper-1.20.4.jar.
+
+Navigeer naar je documenten. En maak een nieuwe map aan genaamd servers.
+Maak hierin nog een map genaamd dev-server-1. En plak hier de jar file die je net hebt gedownload. Noem deze ``server.jar``
+
 
 ### Batch script maken ###
-Maak nu in dezelfde map een txt bestand. En noem deze start.bat. Open deze in een text editor. En plak hierin het volgende:
-```batch
-java -Xms1G -Xmx1G -jar server.jar nogui
+De map waar onze jar file staat. Is de server map. In deze map gaan we een nieuw bestand aanmaken, genaamd ``start.bat``.
+
+Dit doen we door de volgende stappen te volgen:
+- Maak een nieuw txt bestand aan. Noem deze ``start.txt``
+- Open dit bestand. En plak de volgende code
+```shell
+java -Xms1G -Xmx1G -jar server.jar noguih
 pause
 ```
+- Druk op opslaan als. En noem het bestand ``start.bat``
+
+### Uitlegvideo ###
+[![Uitlegvideo](https://img.youtube.com/vi/wzbdnA-5Mwg/0.jpg)](https://www.youtube.com/watch?v=wzbdnA-5Mwg)
+
 Hier hebben we een aantal argumenten.<br/><br/>
 * ```-xmx1G```: Dit is de maximale hoeveelheid RAM die de server mag gebruiken. Dit is 1GB.<br/>
 * ```-xms1G```: Dit is de minimale hoeveelheid RAM die de server mag gebruiken. Dit is 1GB.<br/>
 * ```-jar server.jar```: Dit is de jar die we willen uitvoeren. Dit is de jar die we net hebben gedownload.
 
 ### Server starten ###
-We starten nu de server door het batch script te runnen.
+We starten nu de server door het batch script te runnen. (start.bat)
 
 Wanneer je geen jdk17 hebt geïnstalleerd zal je een foutmelding krijgen.
 Om dit op te lossen kan je OpenJDK17 installeren via [Deze Link](https://aka.ms/download-jdk/microsoft-jdk-17.0.7-windows-x64.msi)
 
 De eerste keer zal je opvallen dat er een eula.txt bestand wordt gegenereerd. 
 Open deze in een text editor. En verander de waarde van eula van false naar true.
+
 ```txt
 #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
 #Thu Sep 23 15:34:28 CEST 2021
@@ -58,7 +141,15 @@ Start nu de server opnieuw op. En je zult zien dat de server opstart. En dat je 
 ## Eerste Minecraft plugin ##
 
 ### Project aanmaken ###
-We beginnen met een project aanmaken in Intellij met de Minecraft plugin. Dit doen we door naar File -> New -> Project te gaan. En hier te kiezen voor Minecraft Development. En dan voor Plugin. We geven het project een naam. En kiezen voor de laatste versie van Paper. Dan kiezen we voor Java 17. En klikken we op create.
+We beginnen met een project aanmaken in Intellij met de Minecraft plugin. 
+
+Dit doen we door naar File -> New -> Project te gaan. 
+
+En hier te kiezen voor Minecraft Development, en dan voor Plugin. 
+
+We geven het project een naam. En kiezen voor de laatste versie van Paper (1.20.4). 
+
+Dan kiezen we voor Java 17. En klikken we op create.
 
 ![img_1.png](img_1.png)
 
