@@ -1,33 +1,36 @@
 # Les 1: Java Basics #1 #
 
-We gaan in deze les de eerste stappen zetten richting Java. Dit gaan we doen door een nieuwe editor te installeren, Intellij IDEA. Dit is een IDE van JetBrains. Deze is gratis te gebruiken onder de community editie. En verder ook bruikbaar met een schoollicentie onder de betaalde editie. De versie maakt in dit geval niet uit.
-Tijdens het installeren van de editor kijken we naar de verschillen en overeenkomsten tussen Java en C#. C# zou bekend moeten zijn. En het mooie van deze twee talen is dat ze enorm veel op elkaar lijken!
-Wanneer de IDE is geinstalleerd gaan we ons eerste project aanmaken. We maken een console app. En beginnen met een aantal basics. Classes, for loops, while loops, foreach loops, if, else, etc.
- 
-Het installeren van de IDE
-We starten met het installeren van de nieuwe IDE: Jetbrains Intellij IDEA.
+We gaan in deze les de eerste stappen zetten richting Java. Dit gaan we doen door een nieuwe editor te installeren, 
+Intellij IDEA. Dit is een IDE van JetBrains. Deze is gratis te gebruiken onder de community editie.
+
+## Opdracht 1 ##
+Download en installeer de Jetbrains Intellij IDEA.
 Deze is te vinden op de volgende link: https://www.jetbrains.com/idea/
-Download en installeer deze. Zowel de Ultimate editie, als de community editie is goed.
 
+## Opdracht 2 ##
+Tijdens het installeren van de IDE, kunnen we kijken naar de verschillen en overeenkomsten tussen Java en C#.
+C# zou je al eens gezien moeten hebben. En het mooie van deze twee talen is dat ze enorm veel op elkaar lijken!
 
-## De verschillen tussen Java en C# ##
+Wanneer de IDE is geinstalleerd gaan we ons eerste project aanmaken. We maken een console app. En beginnen met een aantal basics. Classes, for loops, while loops, foreach loops, if, else, etc.
+
+### De verschillen tussen Java en C# ###
 
 ![img.png](img.png)
 
-### Een aantal voorbeelden van de verschillen: ###
+#### Een aantal voorbeelden van de verschillen: ####
 
 Links Java, Rechts C#
 
  - Java package, C# namespace
  - Java import, C# using
- - Java lowercase packages, C# CamelCase packages
+ - Java lowercase packages, C# PascalCase packages
  - Java camelCase methods, C# PascalCase methods
  - Java @Annotations, C# [Annotations]
  - Java {} op dezelfde line, C# {} op de volgende line
 
 Verder zijn Java en C# op de voorgrond zo goed als identiek aan elkaar.
 
-## Een snelle rondleiding in de nieuwe IDE: ##
+### Een snelle rondleiding in de nieuwe IDE: ###
 
 Wanneer je de IDE opent zal het volgende scherm zichtbaar worden. Bij jullie zullen hier nog geen projecten staan. Bij mij al wel een aantal. Hier hebben we de optie om een nieuw project aan te maken. Een project op te halen van VCS (GitHub) Of een bestaand project te openen.
 
@@ -56,36 +59,49 @@ Ik heb hier een aantal belangrijke punten van de IDE vermeld.
 ![img_2.png](img_2.png)
 
 ## Een eerste Java project maken: ##
-Nu we de verschillen weten tussen Java en C#, en onze nieuwe IDE is geinstalleerd, en we deze een beetje kennen. Gaan we een nieuw project maken. Doe dit net als in het voorbeeld hierboven. Noem het project “KZD Java Les 1”
+Nu we de verschillen weten tussen Java en C#, en onze nieuwe IDE is geinstalleerd, en we deze een beetje kennen. Gaan we een nieuw project maken. 
 
-Wanneer het project is aangemaakt gaan we naar de code. Dit doen we door in onze explorer naar src > main > java > org.example > Main te gaan. Wanneer je hier op Main klikt. Opent de Main class in je editor window.
+- Doe dit net als in het voorbeeld hierboven. Noem het project **“KZDJavaLes1”**
+- De Locatie kan je laten staan.
+- Build system: Maven
+- JDK: 17+ (Als je deze niet hebt. Druk dan op Download JDK, en selecteer een versie)
+- Open het blokje advanced
+- Vul bij groupId je package naam in. (Dit is meestal een site in de vorm van je bedrijfsnaam of gamertag, in mijn geval **nl.curio**, dit kan dus ook me.bkdev zijn, of com.github)
+
+![img_3.png](img_3.png)
+
+Wanneer je nu op “Create” drukt. Zal het project worden aangemaakt. En geopend worden in de IDE.
+Als het goed is zal de Main class in je editor window worden geopend.
+Is dit niet het geval, open de Main class dan zelf. Deze staat onder de src > main > java > <package naam> > Main.java
 
 We zien hier een aantal dingen. Onder andere dat de “main” method al is aangemaakt. Dit is makkelijk. Dan kunnen we gelijk beginnen met programmeren.
-Ook zien we “org.example” staan. Dit is je package name. Wanneer je voor een bedrijf programmeert zal dit de website zijn voor het bedrijf. Dit was voor mij, bij DusDavidGames, dusdavidgames.nl. Dus de package name was hier nl.dusdavidgames.(projectnaam). Wanneer je voor jezelf programmeert. Of geen website hebt. Gebruik je me.(alias).(projectnaam). Dus in mijn geval me.bk28.(projectnaam).
 
-We veranderen nu onze org.example naar de juiste benaming. Dit doen we door rechter muisknop op de package te doen. En te drukken op Refactor > Rename.
+### Lombok ###
+Nu we ons eerste project hebben aangemaakt, kijken we gelijk naar een van de meest gebruikte libraries in Java. **Lombok**.
+Lombok is een handige tool die het enorm makkelijk maakt om getters, setters en constructors te maken!
 
-Intellij verandert automatisch alle bijbehorende namen in je code files.
+#### Lombok uitleg video ####
+[![Lombok uitleg](https://img.youtube.com/vi/LxSHSSRgy40/0.jpg)](https://www.youtube.com/watch?v=LxSHSSRgy40)
 
-Je eerste project is aangemaakt. We starten met het installeren van Lombok. Lombok is een handige tool die het enorm makkelijk maakt om getters, setters en constructors te maken!
+#### Opdracht: Installeer Lombok ####
+Bekijk de video hierboven. En volg de stappen van Jens, of volg de instructies hieronder.
 
-Ga hiervoor naar je POM.xml.
-
-Ook hier zien we bovenaan bij groupId weer de verkeerde naam staan. Pas dit aan naar de correcte naamgeving.
-Als je dit hebt gedaan kan je onderaan op regel 16 de volgende lines toevoegen:
+- Navigeer naar je POM.xml, deze staat in de hoofdmap van je project.
+- Zoek naar het </properties> blok. En plak de regels hieronder in het codeblok, onder dit blok.
 
 ```xml
 <dependencies>
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.26</version>
+        <version>1.18.30</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
 ```
 
-Je pom.xml zier er nu zo uit:
+- Je pom.xml zier er nu zo uit:
+- 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -93,8 +109,8 @@ Je pom.xml zier er nu zo uit:
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.curio</groupId>
-    <artifactId>les1</artifactId>
+    <groupId>MIJN_MOOIE_PACKAGE_NAME</groupId>
+    <artifactId>MIJN_MOOIE_PROJECT_NAME</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -107,15 +123,15 @@ Je pom.xml zier er nu zo uit:
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
 ```
 
-Er verschijnt nu rechts boven een refresh knopje van maven. Druk hier op.
-Als deze niet verschijnt doe je rechter muisknop op pom.xml. En druk je op Maven > Reload Project
+- Er verschijnt nu rechts boven een refresh knopje van maven. Druk hier op.
+- Als deze niet verschijnt doe je rechter muisknop op pom.xml. En druk je op Maven > Reload Project
 
 Dit zal de lombok dependency in je project laden. Wanneer dit is gebeurt kunnen we beginnen met programmeren.
 
