@@ -1,28 +1,23 @@
-# Les 4: Minecraft/Paper basics #3 #
+# Les 4: Minecraft / Paper basics #3 #
 
-In deze les kijken we oppervlakkig naar de implementatie van MySQL en databases binnen Java en Minecraft plugins.
-We gaan portals maken om naar onze warps te teleporteren. En we gaan interactie doen met objecten en elementen in het spel. Door middel van events.
+## Vorige les ##
+[Les 3: Minecraft / Paper basics #2](/les3/readme.md)
 
-## Intro MySql ##
-We beginnen met MySql, een database systeem. Een database is een plek waar je data kan opslaan. Je kan het zien als een soort Excel bestand. Je kan er data in opslaan. En je kan er data uit ophalen.
-Vorige weken hebben we data opgeslagen in configs. Dit heeft zijn voor en nadelen. Een aantal hiervan zijn:
-- Configs zijn makkelijk te delen met andere mensen
-- Configs zijn makkelijk aan te passen
-- Configs zijn makkelijk te backuppen
-- Configs zijn makkelijk te lezen
-- Configs zijn makkelijk te begrijpen
-- Configs zijn makkelijk te gebruiken
+### Dit zou je gedaan moeten hebben / moeten weten ###
+- Configs
+- Warp plugin
+- Geld bijhouden
 
-Maar configs hebben ook een aantal nadelen:
-- Configs zijn lokaal opgeslagen
-- Configs zijn makkelijk te verliezen
-- Configs zijn makkelijk te verwijderen
-- Configs zijn makkelijk te veranderen
+## Deze les ##
 
-Voor nu gebruiken we configs. Maar onder andere bij grote servers is het handig om een database te gebruiken. Dit is omdat je dan makkelijk data kan delen tussen verschillende servers. En omdat je makkelijk backups kan maken. En omdat je makkelijk data kan opvragen en aanpassen.
+### Leerdoelen ###
+- Events
+- Parkour plugin
 
-## Events ##
-In Paper hebben we de mogelijkheid gebruik te maken van events. Events zijn een manier om te reageren op acties van spelers. Bijvoorbeeld als een speler een blok kapot maakt. Of als een speler een blok plaatst.
+### Uitleg ###
+In deze les gaan we onszelf verdiepen in events.
+Events zijn een manier om te reageren op acties van spelers.
+Bijvoorbeeld als een speler een blok kapot maakt. Of als een speler een blok plaatst.
 Een aantal voorbeelden van veelgebruikte events zijn:
 - PlayerJoinEvent
 - PlayerQuitEvent
@@ -35,148 +30,194 @@ Een aantal voorbeelden van veelgebruikte events zijn:
 - EntityDeathEvent
 - InventoryClickEvent
 
-### Warp portals ###
-We gaan een portal maken om naar onze warps te teleporteren. Dit doen we door een portal te bouwen. En de blokken in de portal te herkennen. Als een speler in de portal staat teleporteren we hem naar de warp.
-Om dit te kunnen doen hebben we een aantal dingen nodig:
-- Een lijst van blocks binnen de portal
-- Een target warp
-- Een PlayerMoveEvent listener
+## Events ##
+Hieronder zie je een lijst van events die je kan gebruiken. Met een korte omschrijving van de event.
 
-#### Lijst van blocks binnen de portal ####
-Bouw in-game een portal, net als een netherportal. Maar laat de binnenkant leeg.
-We gaan nu een lijst maken van alle blokken binnen de portal.
+| Event                     | Omschrijving                                        |
+|---------------------------|-----------------------------------------------------|
+| PlayerJoinEvent           | Een speler is ingelogd.                             |
+| PlayerQuitEvent           | Een speler is afgemeld.                             |
+| PlayerInteractEvent       | Een speler interacteert met een blok.               |
+| PlayerMoveEvent           | Een speler beweegt.                                 |
+| BlockBreakEvent           | Een speler breekt een blok.                         |
+| BlockPlaceEvent           | Een speler plaatst een blok.                        |
+| EntityDamageEvent         | Een entiteit is gedamaged.                          |
+| EntityDamageByEntityEvent | Een entiteit is gedamaged door een andere entiteit. |
+| EntityDeathEvent          | Een entiteit is gestorven.                          |
+| InventoryClickEvent       | Een speler klikt op een item in de inventaris.      |
 
-Maak een nieuwe class aan. Noem deze `Portal.java`. Deze class gaan we gebruiken om de portal te herkennen. En om de portal te teleporteren.
+Je kan alle events vinden in de [JavaDoc](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/package-summary.html).
 
-In deze class maken we een variabele aan voor de target. En een lijst met blocks.
+
+## Parkour ##
+We gaan een parkour maken. Dit doen we door een parkour blok te herkennen. En zodra de speler op dat blok komt. Zijn y-positie op te slaan. Hierdoor kunnen we detecteren of de speler is gevallen, door te kijken wat het verschil is tussen de huidige positie en de laatste positie.
+
+We gaan als blok een DIAMOND_BLOCK gebruiken. Als parkour start locatie gebruiken we een EMERALD_BLOCK.
+
+Onze parkour plugin gaat als volgt werken:
+- Als een speler op een EMERALD_BLOCK staat, wordt zijn positie opgeslagen. Dit is de startpositie. Hier teleporteren we de speler naartoe als hij/zij valt.
+- Zodra de speler begint met het parkour wordt per DIAMOND_BLOCK waar de speler op staat zijn positie overschreven. Dit doen we zodat we altijd de laatste positie hebben.
+- We vergelijken in de PlayerMoveEvent de afstand tussen de speler en het laatste DIAMOND_BLOCK. Op die manier kunnen we detecteren of de speler is gevallen.
+
+### PlayerMoveEvent Listener ###
+We gaan beginnen met het aanmaken van een PlayerMoveEvent. Dit event wordt getriggerd als een speler beweegt. We gaan dit event gebruiken om te kijken of een speler over de aangegeven blokken loopt.
+
+Maak een nieuwe class aan. Noem deze `ParkourListener.java`. Deze class gaan we gebruiken om het event te luisteren.
+
 ```java
-@Getter
-@Setter
-@AllArgsConstructor
-public class Portal {
+public class ParkourListener implements Listener {
     
-    private Location target;
-    private List<Location> blocks = new ArrayList<>();
-    
-}
-```
-
-We kunnen nu heel simpel een nieuw portaal aanmaken door het volgende stuk code to gebruiken.
-```java
-Portal portal = new Portal(
-        new Location(Bukkit.getWorld("world"), 0, 100, 0),
-        Arrays.asList(
-            new Location(Bukkit.getWorld("world"), 0, 50, 0),
-            new Location(Bukkit.getWorld("world"), 0, 50, 1),
-            new Location(Bukkit.getWorld("world"), 0, 51, 0),
-            new Location(Bukkit.getWorld("world"), 0, 51, 1),
-            new Location(Bukkit.getWorld("world"), 0, 52, 0),
-            new Location(Bukkit.getWorld("world"), 0, 52, 1)
-        ));
-```
-
-Dit maakt een portaal naar de warp `spawn`.
-
-#### PlayerMoveEvent listener ####
-We gaan nu een listener maken voor het PlayerMoveEvent. Dit event wordt getriggerd als een speler beweegt. We gaan dit event gebruiken om te kijken of een speler in een portal staat. En als dat zo is teleporteren we hem naar de warp.
-
-Maak een nieuwe class aan. Noem deze `PortalListener.java`. Deze class gaan we gebruiken om het event te luisteren. En om de speler te teleporteren.
-
-In deze class maken we een variabele aan voor de portal. En een lijst met portals.
-```java
-@Getter
-@Setter
-public class PortalListener implements Listener {
-    
-    private List<Portal> portals = new ArrayList<>();
+    private Material parkourStartMaterial = Material.EMERALD_BLOCK;
+    private Material parkourMaterial = Material.DIAMOND_BLOCK;
     
 }
 ```
 
-In deze lijst gaan we onze portals registreren. Wanneer een portaal geregistreerd is checken we of hier een speler in staat.
+In deze class geven we gelijk 2 Materials aan. Dit zijn de blokken die we gaan herkennen. Deze mag je veranderen in andere blokken!
 
-Eerst voegen we een register methode toe aan de `PortalListener`
-
-```java
-public void register(Portal portal) {
-    portals.add(portal);
-}
-```
-
-Nu gaan we de `PlayerMoveEvent` luisteren. Dit doen we door de volgende code toe te voegen aan de `PortalListener`
+Nu gaan we naar het PlayerMoveEvent luisteren. Dit doen we door de volgende methode toe te voegen aan de `ParkourListener`
 ```java
 @EventHandler
-public void onMove(PlayerMoveEvent event){
+public void onMove(PlayerMoveEvent event) {
     // De speler die beweegt
     Player player = event.getPlayer();
+    
+    // De locatie van de speler -1 y as (1 blok onder de speler)
+    Location location = player.getLocation().add(0, -1, 0);
+}
+```
 
-    // De locatie van de speler
-    Location location = player.getLocation();
+Hier heb ik al wat code voorgetypt om de locatie van het blok, en de speler op te halen.
 
-    // Loop door alle portals
-    for (Portal portal : portals) {
+We voegen nu bovenaan de class. Onder de parkour blokken 2 nieuwe velden toe.
+```java
+private Location parkourStartLocation;
+private Location parkourLocation;
+```
 
-        // Loop door alle blocks in de portal
-        for (Location portalLocation : portal.getBlocks()) {
-
-            // Check of de speler in de portal staat
-            if (portalLocation.getBlockX() == location.getBlockX()
-                && portalLocation.getBlockY() == location.getBlockY()
-                && portalLocation.getBlockZ() == location.getBlockZ()
-                && portalLocation.getWorld() == location.getWorld()) {
-                //TODO: Teleporteer speler naar target
-            }
-        }
+Deze gaan we gebruiken om de locaties van de blokken op te slaan. Dit doen we in de `onMove` methode.
+```java
+// Check of de speler op een parkour blok staat
+if (location.getBlock().getType() == parkourMaterial) {
+    // Zet de parkour locatie naar de locatie van de speler
+    if (parkourLocation == null || parkourLocation.getBlockY() != location.getBlockY() || parkourLocation.getBlockX() != location.getBlockX() || parkourLocation.getBlockZ() != location.getBlockZ()) {
+        parkourLocation = location;
+    } 
+}
+    
+// Check of de speler op een parkour start blok staat
+if (location.getBlock().getType() == parkourStartMaterial) {
+    // Zet de parkour start locatie naar de locatie van de speler
+    if (parkourStartLocation == null) {
+        parkourStartLocation = player.getLocation();
     }
 }
 ```
 
-Voeg zelf op de juiste plek de functionaliteit toe om de speler te teleporteren naar de target warp.
+Voeg nu zelf een aantal leuke berichten toe. Gebruik hiervoor `player.sendMessage("bericht");`
+Laat de speler bijvoorbeeld weten wanneer hij het parkour is begonnen.
 
-#### Listener registreren ####
+Nu gaan we de afstand tussen de speler en het laatste parkour blok berekenen. Dit doen we door de volgende code toe te voegen aan de `onMove` methode.
 
-Navigeer naar je Main class. Dit is de class die van het type JavaPlugin is. Dit is de class die de plugin representeert. Hier gaan we de listener registreren.
+```java
+// Check of de speler het parkour is begonnen
+if (parkourStartLocation == null) {
+    // De speler is nog niet begonnen met het parkour
+    return;
+}
+
+// Check of de speler al op een parkour blok is geweest
+if (parkourLocation == null) {
+    // De speler is nog niet op een parkour blok geweest
+    return;
+}
+
+// Bereken de afstand tussen de speler en het laatste parkour blok
+double distance = parkourLocation.distance(location);
+
+// Check of de afstand groter is dan 6
+if (distance > 6) {
+    // Teleporteer de speler naar de start locatie
+    player.teleport(parkourStartLocation);
+    // Zet de parkour locatie naar null
+    parkourLocation = null;
+    // Zet de parkour startLocatie naar null
+    parkourStartLocation = null;
+}
+```
+
+Voeg ook hier zelf weer een bericht toe. Laat de speler bijvoorbeeld weten dat hij is gevallen.
+
+
+### Listener registreren ###
+Om de listener te registreren gaan we opnieuw naar onze Main class.
 
 Voeg de volgende code toe aan de `onEnable` methode.
 ```java
-PortalListener portalListener = new PortalListener();
-Bukkit.getPluginManager().registerEvents(portalListener, this);
+ParkourListener parkourListener = new ParkourListener();
+Bukkit.getPluginManager().registerEvents(parkourListener, this);
 ```
 
-Dit zorgt ervoor dat Paper weet dat de `PortalListener` naar events moet luisteren.
+Dit zorgt ervoor dat Paper weet dat de `ParkourListener` naar events moet luisteren.
 
-#### Portal registreren ####
-Nu kunnen we portals registreren. Dit doen we door een nieuwe portal te maken zoals hierboven aangegeven.
-En deze te registreren bij de `PortalListener`. Dit doen we door de volgende code toe te voegen aan de `onEnable` methode.
+### Compilen ###
+Compilen doen we via Maven. Maven is een tool voor het compilieren van Java code.
+
+Dit kan je doen door rechts boven op het groene pijltje te drukken. Als het goed is krijg je geen errors.
+Je ziet nu in de code wat maven aan het doen is. Als alles gaat zoals het hoort, zie je daar een pad staan waar je plugin is opgeslagen.
+Dit zier er ongeveer zo uit: `C:\Users\Bart Kouwenberg\IdeaProjects\Parkour\target\Parkour-1.0-SNAPSHOT.jar`
+Navigeer naar deze locatie. En copy en paste je plugin naar de plugins folder van je server.
+Start je server. En als het goed is werkt je plugin nu!
+
+### Extra: Timer bijhouden ###
+Als je nog iets extras wil doen is het leuk om een timer bij te houden. Dit doen we door een aantal dingen toe te voegen aan de `ParkourListener`.
+
+We starten met een nieuw veld, een startTime. Dit veld is van het type long. En we noemen dit `startTime`.
+
 ```java
-Portal portal = new Portal(
-        new Location(Bukkit.getWorld("world"), 0, 100, 0),
-        Arrays.asList(
-            new Location(Bukkit.getWorld("world"), 0, 50, 0),
-            new Location(Bukkit.getWorld("world"), 0, 50, 1),
-            new Location(Bukkit.getWorld("world"), 0, 51, 0),
-            new Location(Bukkit.getWorld("world"), 0, 51, 1),
-            new Location(Bukkit.getWorld("world"), 0, 52, 0),
-            new Location(Bukkit.getWorld("world"), 0, 52, 1)
-        ));
-portalListener.register(portal);
+private long startTime;
 ```
 
-Zorg er wel voor dat je hier de juiste gegevens gebruikt voor jou portal.
+Wanneer de speler het parkour start. Dus wanneer we de parkourStartLocation zetten. Zetten we ook de startTime. Dit doen we door de volgende code toe te voegen aan de `onMove` methode.
+```java
+startTime = System.currentTimeMillis();
+```
 
-De gegevens van je portal kan je vinden door in-game in de portal te gaan staan en daar op F3 te drukken. Dit laat een debug scherm zien. Met links boven je x, y, z coordinaten. Deze kan je gebruiken om de locaties van de portal te vinden.
-De coordinaten die je ziet is de locatie van je voeten.
+We zetten hier de startTijd naar de huidige servertijd in ms.
 
-Bouw nu je plugin. En start je server. Als je nu in de portal gaat staan wordt je geteleporteerd naar de warp.
+Wanneer de speler aan het einde is gaan we de tijd berekenen die het heeft gekost voor de speler om het parkour te voltooien.
 
-### EXTRA: Trampoline ###
+We starten met het aanmaken van een eind blok. Dit doen we door het volgende veld toe te voegen bovenaan.
+```java
+private Material parkourEndMaterial = Material.GOLD_BLOCK;
+```
+
+Nu gaan we detecteren of de speler op het eind blok staat. Dit doen we door de volgende code toe te voegen aan de `onMove` methode.
+```java
+// Check of de speler op een parkour eind blok staat
+if (location.getBlock().getType() == parkourEndMaterial) {
+    // Bereken de tijd die het heeft gekost om het parkour te voltooien
+    long time = System.currentTimeMillis() - startTime;
+    // Zet de parkour locatie naar null
+    parkourLocation = null;
+    // Zet de parkour startLocatie naar null
+    parkourStartLocation = null;
+    // Stuur de speler een bericht met de tijd die het heeft gekost om het parkour te voltooien
+    player.sendMessage("Je hebt het parkour voltooid in " + time + "ms");
+}
+```
+
+### Testen ###
+Bouw nu zelf in je wereld een parkour en test deze, werkt alles naar behoren?
+
+## Extra opdracht: Trampoline ##
 We gaan een trampoline maken. Dit doen we door een blok te herkennen. En als een speler op dat blok springt hem de lucht in te schieten.
 
 Om dit te kunnen doen hebben we een aantal dingen nodig:
 - Een blok die we gaan herkennen als trampoline
 - Een PlayerMoveEvent listener
 
-#### PlayerMoveEvent Listener ####
+### PlayerMoveEvent Listener ###
 We gaan nu een listener maken voor het PlayerMoveEvent. Dit event wordt getriggerd als een speler beweegt. We gaan dit event gebruiken om te kijken of een speler op een trampoline staat. En als dat zo is schieten we hem de lucht in.
 
 Maak een nieuwe class aan. Noem deze `TrampolineListener.java`. Deze class gaan we gebruiken om het event te luisteren. Net zoals bij de portal.
@@ -213,7 +254,7 @@ public void onMove(PlayerMoveEvent event) {
 
 Kijk ook eens wat er gebeurt als je de waardes binnen de Vector iets veranderd.
 
-#### Listener registreren ####
+### Listener registreren ###
 Om de listener te registreren gaan we opnieuw naar onze Main class.
 
 Voeg de volgende code toe aan de `onEnable` methode.

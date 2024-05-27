@@ -1,7 +1,7 @@
 # Les 2: Minecraft / Paper basics #1 #
 
 ## Vorige les ##
-[Les 1: Java Basics](https://github.com/bk2804/kzd-java/tree/main/les1)
+[Les 1: Java Basics](/les1/readme.md)
 
 ### Dit zou je gedaan moeten hebben / moeten weten ###
 - Intellij IDEA geïnstalleerd

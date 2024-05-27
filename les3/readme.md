@@ -1,24 +1,41 @@
-# Les 3: Minecraft/Paper basics #2 #
+# Les 3: Minecraft / Paper basics #2 #
 
-In deze les gaan we wat dieper in op Paper. We kijken onder andere naar configs. We gaan een warp plugin maken. En we gaan geld bijhouden voor een speler.
+## Vorige les ##
+[Les 2: Minecraft / Paper basics #1](/les2/readme.md)
 
-Ook gaan we een begin maken met MySql data opslag.
+### Dit zou je gedaan moeten hebben / moeten weten ###
+- Weten wat Minecraft is
+- Weten welke Minecraft serveropties we hebben
+- Minecraft plugin voor Intellij
+- Paper server opzetten
+- Eerste Minecraft plugin
+- Plugin bouwen
+- onCommand argumenten
+- Teleportatie commando
+- Kleurcodes in messages
 
-## Lombok ##
-We beginnen met Lombok. Lombok is een library die het makkelijker maakt om classes te maken. Het zorgt ervoor dat je minder code hoeft te schrijven. En dat je code makkelijker te lezen is.
+## Deze les ##
 
-### Installatie ###
-We hebben in Les 1 al eens naar Lombok gekeken. Installeer Lombok hier op dezelfde manier. Als je het niet meer weet kan je het teruglezen in Les 1.
+### Leerdoelen ###
+- Configs
+- Warp plugin
+- Geld bijhouden
 
-## Configs ##
-Configs zijn een manier om data op te slaan. Je kan het zien als een soort database. Het is een bestand waarin je data kan opslaan. Je kan het gebruiken om bijvoorbeeld een lijst met warps op te slaan. Of een lijst met spelers die een bepaalde rank hebben.
+### Uitleg ###
+In deze les gaan we onszelf verdiepen in configs.
+Configs zijn bedoeld om data op te slaan. Zo kunnen we bijvoorbeeld een lijst met warps opslaan.
 
-Configs zijn erg handig omdat je ze makkelijk kan aanpassen. Je kan ze ook makkelijk delen met andere mensen. Ook backuppen is makkelijk.
+Configs zijn in het geval van een Paper plugin, een yml bestand.
 
 ### Config aanmaken ###
-Om een config aan te maken moet je eerst een bestand aanmaken. Dit doe je in de map resources. Naast de plugin.yml. Dit kan je doen door met de rechtermuisknop op de map te klikken en dan te kiezen voor `New > File`. Geef het bestand een naam. Bijvoorbeeld `warps.yml`. Zorg dat je de extensie `.yml` gebruikt. Dit is een speciaal bestandstype dat Paper kan lezen.
+Om een config aan te maken moet je eerst een bestand aanmaken. Dit doe je in de map resources. Naast de plugin.yml. 
+Dit kan je doen door met de rechtermuisknop op de map te klikken en dan te kiezen voor `New > File`.
+Geef het bestand een naam. Bijvoorbeeld `warps.yml`. Zorg dat je de extensie `.yml` gebruikt. Dit is een speciaal bestandstype dat Paper kan lezen.
 
-Als je het bestand hebt aangemaakt kan je het openen. Je ziet dan een leeg bestand. Hierin kan je data opslaan. Je kan bijvoorbeeld een lijst met warps opslaan. Of een lijst met spelers die een bepaalde rank hebben.
+Als je het bestand hebt aangemaakt kan je het openen. Je ziet dan een leeg bestand. Hierin kan je data opslaan.
+Je kan bijvoorbeeld een lijst met warps opslaan. Of een lijst met spelers die een bepaalde rank hebben.
+
+In dit geval heet het bestand `warps.yml`. Maar we kunnen natuurlijk ook andere namen gebruiken.
 
 ### Config laden ###
 Om een config te laden moet je eerst een variabele aanmaken. Dit doe je door het volgende veld toe te voegen bovenaan je code:
@@ -30,19 +47,37 @@ Daarna moet je de config laden. Dit doe je in je onEnable. Je laadt de config do
 ```java
 warpConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder() + "/warps.yml"));
 ```
+Hier staat wederom warps.yml. Maar je kunt natuurlijk ook andere bestanden gebruiken.
 
 ### Config opslaan ###
 Als je een config hebt geladen kan je er data in opslaan.
 
-Data opslaan in een config is heel simpel. Paper heeft een voorgebouwde serializer en deserializer. Dit betekend dat je een object kan opslaan en weer kan ophalen.
+Data opslaan in een config is heel simpel. Paper heeft een voorgebouwde serializer en deserializer. 
+Dit betekend dat je een object kan opslaan en weer kan ophalen.
 
-Het Locatie object bijvoorbeeld. Wat we vorige week hebben gebruikt. Je kan een locatie opslaan in een config. En je kan een locatie weer ophalen uit een config.
+Het Locatie object bijvoorbeeld. Wat we vorige week hebben gebruikt. 
+Je kan een locatie opslaan in een config. En je kan een locatie weer ophalen uit een config.
 
 Om een locatie op te slaan in een config gebruik je het volgende:
 
 Hier hebben we het pad waar we de locatie op willen slaan. En de locatie variabele die we op willen slaan.
 ```java
 config.set("warp.spawn", loc);
+```
+
+``warp.spawn`` wijst naar de key ``warp`` in de config en ``spawn`` is de key in de config waar de locatie op staat.
+``loc`` is de locatie die we op slaan.
+
+De config zal er nu zo uit komen te zien:
+```yml
+warp:
+  spawn:
+    world: world
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
 ```
 
 #### Oefenopdracht: /setwarp commando ####
